@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bravaware - Advanced Deep Learning Network for Breast Cancer Detection</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif; /* A clean, modern sans-serif font */
+      background-color: #0A0F1E; /* Base background as per spec */
+      color: #FFFFFF;
+    }
+    /* For custom animations if Tailwind's default aren't enough */
+    @keyframes slowFloat1 {
+      0%, 100% { transform: translate(0px, 0px) scale(1); opacity: 0.3; }
+      25% { transform: translate(60px, -40px) scale(1.1); opacity: 0.35; }
+      50% { transform: translate(-20px, 50px) scale(0.95); opacity: 0.25; }
+      75% { transform: translate(30px, -70px) scale(1.05); opacity: 0.3; }
+    }
+    @keyframes slowFloat2 {
+      0%, 100% { transform: translate(0px, 0px) scale(1); opacity: 0.25; }
+      25% { transform: translate(-50px, 30px) scale(1.15); opacity: 0.3; }
+      50% { transform: translate(40px, -60px) scale(0.9); opacity: 0.2; }
+      75% { transform: translate(-30px, 70px) scale(1.1); opacity: 0.28; }
+    }
+     @keyframes slowFloat3 {
+      0%, 100% { transform: translate(0px, 0px) scale(0.9); opacity: 0.2; }
+      25% { transform: translate(30px, 50px) scale(1); opacity: 0.25; }
+      50% { transform: translate(-40px, -30px) scale(1.05); opacity: 0.15; }
+      75% { transform: translate(50px, 20px) scale(0.95); opacity: 0.22; }
+    }
+    .animate-slow-float-1 { animation: slowFloat1 35s ease-in-out infinite; }
+    .animate-slow-float-2 { animation: slowFloat2 45s ease-in-out infinite; }
+    .animate-slow-float-3 { animation: slowFloat3 40s ease-in-out infinite; }
+
+    /* Custom scrollbar for a more modern look - optional */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0A0F1E; 
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(42, 58, 138, 0.7); /* Deep blue from palette */
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(122, 90, 247, 0.7); /* Soft violet from palette */
+    }
+    /* For indeterminate loading bar */
+    @keyframes indeterminate-progress {
+      0% { left: -35%; right: 100%; }
+      60% { left: 100%; right: -90%; }
+      100% { left: 100%; right: -90%; }
+    }
+    .animate-indeterminate-progress::before {
+      content: '';
+      position: absolute;
+      top:0;
+      height: 100%;
+      background-color: #7a5af7; /* Soft violet */
+      animation: indeterminate-progress 2s infinite ease-out;
+    }
+
+    /* CSS for Vara.js SVG responsiveness */
+    .vara-text-svg-container > svg {
+      max-width: 100%; /* Scale down if wider than container */
+      height: auto;    /* Maintain aspect ratio when scaling */
+      display: block;  /* Consistent rendering, helps with centering if container is not flex */
+    }
+
+    /* Shiny Text Animation */
+    @keyframes shine {
+      to { background-position: -200% center; }
+    }
+    .animate-shine-effect {
+      background-image: linear-gradient(
+        120deg,
+        #ADB5C2 0%,
+        #ADB5C2 49%,
+        #FFFFFF 50%,
+        #ADB5C2 51%,
+        #ADB5C2 100%
+      );
+      background-size: 200% 100%; /* Gradient is twice as wide as the text for full sweep */
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent !important; /* Makes the text itself transparent to show the gradient background */
+      animation-name: shine;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      /* animation-duration is set by inline style in the ShinyText component */
+    }
+    
+    .animate-shine-once {
+      background-image: linear-gradient(
+        120deg,
+        #ADB5C2 0%,
+        #ADB5C2 49%,
+        #FFFFFF 50%,
+        #ADB5C2 51%,
+        #ADB5C2 100%
+      );
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent !important;
+      animation-name: shine;
+      animation-timing-function: linear;
+      animation-iteration-count: 1;
+      animation-fill-mode: forwards;
+    }
+
+    /* --- Preloader Styles --- */
+    .preloader-container {
+      position: fixed;
+      inset: 0;
+      background-color: #000000;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 1s cubic-bezier(0.86, 0, 0.07, 1);
+    }
+
+    .preloader-container.exiting {
+      transform: translateY(-100%);
+    }
+    
+    .preloader-text-wrapper {
+      animation: bouncePop 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    .preloader-text {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(3rem, 10vw, 6rem);
+      font-weight: 700;
+      color: #FFFFFF;
+      text-align: center;
+    }
+    
+    @keyframes bouncePop {
+      0% { transform: scale(0.8); opacity: 0; }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .preloader-subtitle {
+      font-style: italic;
+      font-size: clamp(1rem, 3vw, 1.25rem);
+      font-weight: 400;
+      margin-top: 1rem;
+      letter-spacing: 0.05em;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .preloader-subtitle-animate {
+      /* Base shine styles */
+      background-image: linear-gradient(
+          120deg,
+          #ADB5C2 0%, #ADB5C2 49%, #FFFFFF 50%, #ADB5C2 51%, #ADB5C2 100%
+      );
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent !important;
+      
+      /* Initial state for animation */
+      opacity: 0;
+      
+      /* Animation sequence: fade in, then shine twice */
+      animation: 
+          fadeIn 0.5s ease-out 1.5s forwards,
+          shine 2s linear 2.0s 2;
+    }
+
+    /* --- Modal Styles --- */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(10, 15, 30, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 1rem;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+    }
+
+    @keyframes modal-slide-in-from-top {
+      from {
+        transform: translateY(-30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes modal-zoom-out {
+      from {
+        transform: scale(1);
+        opacity: 1;
+      }
+      to {
+        transform: scale(0.95);
+        opacity: 0;
+      }
+    }
+
+    .modal-content {
+      background-color: #191e32;
+      border-radius: 1rem;
+      padding: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      position: relative;
+      width: 100%;
+      max-width: 95vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      will-change: transform, opacity;
+    }
+
+    .modal-overlay.open .modal-content {
+      animation: modal-slide-in-from-top 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    .modal-content.closing {
+      animation: modal-zoom-out 300ms cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vara@1.4.0/lib/vara.min.js"></script> 
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.6.0",
+    "onnxruntime-web": "https://esm.sh/onnxruntime-web@1.18.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
