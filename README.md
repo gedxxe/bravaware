@@ -1,5 +1,6 @@
 <div align="center">
-  <img src="https://placehold.co/1200x400/0A0F1E/7a5af7/png?text=BRAVAWARE&font=raleway" alt="BRAVAWARE Banner">
+  <img src="https://imgur.com/jfSFjZ4"
+  alt="BRAVAWARE Banner">
   <h1>BRAVAWARE</h1>
   <p><strong>An Advanced Deep Learning Network for Breast Cancer Detection</strong></p>
   <p>A web-based platform providing accessible and intelligent analysis of breast ultrasound images using a state-of-the-art multi-task U-Net model.</p>
