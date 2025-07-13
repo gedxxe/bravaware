@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://imgur.com/jfSFjZ4"
+  <img src="https://i.imgur.com/jfSFjZ4.png"
   alt="BRAVAWARE Banner">
   <h1>BRAVAWARE</h1>
   <p><strong>An Advanced Deep Learning Network for Breast Cancer Detection</strong></p>
