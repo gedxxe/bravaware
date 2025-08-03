@@ -18,6 +18,17 @@
 
 ---
 
+## (❁´◡`❁) Changelog
+
+### 3 August 2025
+The U-Net deep learning model used for this capstone project has been improved with the help of IBM Granite model for optimizing PyTorch development framework when building and training the model.
+Latest Development has been fine-tuned advised by IBM Granite for:
+- Added delta parameter tuning for early stopping considered on val loss
+- Improved model performance with the use of learning rate scheduler
+- Implemented early stopping to prevent overfitting
+- Added batch normalization to improve model stability
+- Improved model performance with the use of data augmentation
+
 ## 🌐 Live Demo
 
 This application is live and can be accessed at:
