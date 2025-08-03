@@ -29,6 +29,9 @@ Latest Development has been fine-tuned advised by IBM Granite for:
 - Added batch normalization to improve model stability
 - Improved model performance with the use of data augmentation
 
+### WARNING!
+Although the model works correctly on localhost, this project is not designed or optimized for real-time inference on the live website due to performance limitations. The focus was not on deploying the web application on a VPS, which affects the AI inference model's detection performance. You should clone this repository and run it locally for testing and to demonstrate the working principles of this capstone project.
+
 ## 🌐 Live Demo
 
 This application is live and can be accessed at:
